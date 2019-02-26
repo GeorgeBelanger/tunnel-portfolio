@@ -8,6 +8,8 @@ function Tunnel(texture) {
 
   this.handleEvents();
 
+  this.initAnimation();
+
   window.requestAnimationFrame(this.render.bind(this));
 }
 
@@ -71,6 +73,12 @@ Tunnel.prototype.createMesh = function(texture) {
     side: THREE.BackSide,
     map: texture
   });
+  this.tubeMaterial.map.wrapS = THREE.MirroredRepeatWrapping;
+  this.tubeMaterial.map.wrapT = THREE.MirroredRepeatWrapping;
+  this.tubeMaterial.map.repeat.set(
+    this.tubeMaterial.repx,
+    this.tubeMaterial.repy
+  );
 
   this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false);
   this.tubeGeometry_o = this.tubeGeometry.clone();
@@ -151,6 +159,85 @@ Tunnel.prototype.onMouseMove = function(e) {
   }
 };
 
+Tunnel.prototype.update = function() {
+  this.createMesh();
+};
+
+Tunnel.prototype.initAnimation = function() {
+  // Timeline animation
+  this.textureParams = {
+    offsetX: 0,
+    offsetY: 0,
+    repeatX: 10,
+    repeatY: 4
+  };
+  this.cameraShake = {
+    x: 0,
+    y: 0
+  };
+  var self = this;
+  var hyperSpace = new TimelineMax({ repeat: -1 });
+  hyperSpace.to(this.textureParams, 4, {
+    repeatX: 0.3,
+    ease: Power1.easeInOut
+  });
+  hyperSpace.to(
+    this.textureParams,
+    12,
+    {
+      offsetX: 8,
+      ease: Power2.easeInOut
+    },
+    0
+  );
+  hyperSpace.to(
+    this.textureParams,
+    6,
+    {
+      repeatX: 10,
+      ease: Power2.easeInOut
+    },
+    "-=5"
+  );
+  var shake = new TimelineMax({ repeat: -1, repeatDelay: 5 });
+  shake.to(
+    this.cameraShake,
+    2,
+    {
+      x: -0.01,
+      ease: RoughEase.ease.config({
+        template: Power0.easeNone,
+        strength: 0.5,
+        points: 100,
+        taper: "none",
+        randomize: true,
+        clamp: false
+      })
+    },
+    4
+  );
+  shake.to(this.cameraShake, 2, {
+    x: 0,
+    ease: RoughEase.ease.config({
+      template: Power0.easeNone,
+      strength: 0.5,
+      points: 100,
+      taper: "none",
+      randomize: true,
+      clamp: false
+    })
+  });
+};
+
+Tunnel.prototype.updateMaterialOffset = function() {
+  this.tubeMaterial.map.offset.x = this.textureParams.offsetX;
+  this.tubeMaterial.map.offset.y += 0.001;
+  this.tubeMaterial.map.repeat.set(
+    this.textureParams.repeatX,
+    this.textureParams.repeatY
+  );
+};
+
 Tunnel.prototype.updateCameraPosition = function() {
 
   this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 30;
@@ -193,6 +280,9 @@ Tunnel.prototype.updateCurve = function() {
 };
 
 Tunnel.prototype.render = function(time) {
+
+  
+  this.updateMaterialOffset();
 
   this.updateCameraPosition();
 
