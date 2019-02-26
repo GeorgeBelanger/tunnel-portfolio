@@ -231,7 +231,6 @@ function Particle(scene, burst, time) {
     this.color = new THREE.Color("hsl("+(time / 50)+",100%,60%)");
   } else {
     var offset = 180;
-    this.color = new THREE.Color("hsl("+(Math.random()*range+offset)+",100%,80%)");
   }
   var mat = new THREE.MeshPhongMaterial({
     color: this.color,

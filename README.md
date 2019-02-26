@@ -34,8 +34,11 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
 ## 2/26/19 Tuesday 3:45pm Glickman
   - Today I am going to work on getting the tunnel portfolio site working
     - First thing I am going to do is copy the codepen into a folder and make a github repo
+    - Deleted all text off the page and am just left with the canvas and links
     - The focus is going to be on index 2. Things I want to change:
       - 1. Change the original particles into screenshots of my projects
+        - Tried https://threejs.org/docs/#api/en/textures/CubeTexture and got a shiny object that killed my render time
+        - Tried https://github.com/abemID/threejstuts/blob/master/5-material-with-image.html but it said these methods were deprecated. 
       - 2. Make the particles clickable
       - 3. Change the texture of the tunnel
-    - Deleted all text off the page and am just left with the canvas and links
+  - Now I see why I should have branches for projects even if I am working solo - The commits don't have to be as big. I can add just comments and such and only save the truly notable commits for master. 
