@@ -229,7 +229,7 @@ window.onload = function() {
   loader.crossOrigin = "Anonymous";
 
   loader.load(
-    "img/demo3/galaxyTexture.jpg",
+    "img/demo3/Difference-between-Coding-and-Programming.jpg",
     function(texture) {
       document.body.classList.remove("loading");
       window.tunnel = new Tunnel(texture);

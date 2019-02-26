@@ -2,20 +2,18 @@ var ww = window.innerWidth;
 var wh = window.innerHeight;
 var isMobile = ww < 500;
 
-function Tunnel(texture) {
+function Tunnel() {
   this.init();
-  this.createMesh(texture);
+  this.createMesh();
 
   this.handleEvents();
-
-  this.initAnimation();
 
   window.requestAnimationFrame(this.render.bind(this));
 }
 
 Tunnel.prototype.init = function() {
 
-  this.speed = 1;
+  this.speed = .1;
   this.prevTime = 0;
 
   this.mouse = {
@@ -45,12 +43,12 @@ Tunnel.prototype.init = function() {
 
 Tunnel.prototype.addParticle = function() {
   this.particles = [];
-  for(var i = 0; i < (isMobile?70:150); i++){
+  for(var i = 0; i < (isMobile?10:20); i++){
     this.particles.push(new Particle(this.scene));
   }
 };
 
-Tunnel.prototype.createMesh = function(texture) {
+Tunnel.prototype.createMesh = function() {
   var points = [];
   var i = 0;
   var geometry = new THREE.Geometry();
@@ -71,14 +69,8 @@ Tunnel.prototype.createMesh = function(texture) {
 
   this.tubeMaterial = new THREE.MeshBasicMaterial({
     side: THREE.BackSide,
-    map: texture
+    color:0xffffff
   });
-  this.tubeMaterial.map.wrapS = THREE.MirroredRepeatWrapping;
-  this.tubeMaterial.map.wrapT = THREE.MirroredRepeatWrapping;
-  this.tubeMaterial.map.repeat.set(
-    this.tubeMaterial.repx,
-    this.tubeMaterial.repy
-  );
 
   this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false);
   this.tubeGeometry_o = this.tubeGeometry.clone();
@@ -159,85 +151,6 @@ Tunnel.prototype.onMouseMove = function(e) {
   }
 };
 
-Tunnel.prototype.update = function() {
-  this.createMesh();
-};
-
-Tunnel.prototype.initAnimation = function() {
-  // Timeline animation
-  this.textureParams = {
-    offsetX: 0,
-    offsetY: 0,
-    repeatX: 10,
-    repeatY: 4
-  };
-  this.cameraShake = {
-    x: 0,
-    y: 0
-  };
-  var self = this;
-  var hyperSpace = new TimelineMax({ repeat: -1 });
-  hyperSpace.to(this.textureParams, 4, {
-    repeatX: 0.3,
-    ease: Power1.easeInOut
-  });
-  hyperSpace.to(
-    this.textureParams,
-    12,
-    {
-      offsetX: 8,
-      ease: Power2.easeInOut
-    },
-    0
-  );
-  hyperSpace.to(
-    this.textureParams,
-    6,
-    {
-      repeatX: 10,
-      ease: Power2.easeInOut
-    },
-    "-=5"
-  );
-  var shake = new TimelineMax({ repeat: -1, repeatDelay: 5 });
-  shake.to(
-    this.cameraShake,
-    2,
-    {
-      x: -0.01,
-      ease: RoughEase.ease.config({
-        template: Power0.easeNone,
-        strength: 0.5,
-        points: 100,
-        taper: "none",
-        randomize: true,
-        clamp: false
-      })
-    },
-    4
-  );
-  shake.to(this.cameraShake, 2, {
-    x: 0,
-    ease: RoughEase.ease.config({
-      template: Power0.easeNone,
-      strength: 0.5,
-      points: 100,
-      taper: "none",
-      randomize: true,
-      clamp: false
-    })
-  });
-};
-
-Tunnel.prototype.updateMaterialOffset = function() {
-  this.tubeMaterial.map.offset.x = this.textureParams.offsetX;
-  this.tubeMaterial.map.offset.y += 0.001;
-  this.tubeMaterial.map.repeat.set(
-    this.textureParams.repeatX,
-    this.textureParams.repeatY
-  );
-};
-
 Tunnel.prototype.updateCameraPosition = function() {
 
   this.mouse.position.x += (this.mouse.target.x - this.mouse.position.x) / 30;
@@ -281,9 +194,6 @@ Tunnel.prototype.updateCurve = function() {
 
 Tunnel.prototype.render = function(time) {
 
-  
-  this.updateMaterialOffset();
-
   this.updateCameraPosition();
 
   this.updateCurve();
@@ -315,13 +225,7 @@ Tunnel.prototype.render = function(time) {
 
 function Particle(scene, burst, time) {
   var radius = Math.random()*0.002 + 0.0003;
-  var geom = this.icosahedron;
-  var random = Math.random();
-  if(random > 0.9){
-    geom = this.cube;
-  } else if(random > 0.8){
-    geom = this.sphere;
-  }
+  var geom = this.cube
   var range = 50;
   if(burst){
     this.color = new THREE.Color("hsl("+(time / 50)+",100%,60%)");
@@ -339,7 +243,7 @@ function Particle(scene, burst, time) {
   this.percent = burst ? 0.2 : Math.random();
   this.burst = burst ? true : false;
   this.offset = new THREE.Vector3((Math.random()-0.5)*0.025, (Math.random()-0.5)*0.025, 0);
-  this.speed = Math.random()*0.004 + 0.0002;
+  this.speed = Math.random()*0.001 + 0.0002;
   if (this.burst){
     this.speed += 0.003;
     this.mesh.scale.x *= 1.4;
@@ -352,9 +256,7 @@ function Particle(scene, burst, time) {
   scene.add(this.mesh);
 }
 
-Particle.prototype.cube = new THREE.BoxBufferGeometry(1, 1, 1);
-Particle.prototype.sphere = new THREE.SphereBufferGeometry(1, 6, 6 );
-Particle.prototype.icosahedron = new THREE.IcosahedronBufferGeometry(1,0);
+Particle.prototype.cube = new THREE.BoxBufferGeometry(.5, 5, 3);
 Particle.prototype.update = function (tunnel) {
   
   this.percent += this.speed * (this.burst?1:tunnel.speed);
@@ -369,14 +271,7 @@ Particle.prototype.update = function (tunnel) {
 };
 
 window.onload = function() {
-  var loader = new THREE.TextureLoader();
-  loader.crossOrigin = "Anonymous";
 
-  loader.load(
-    "img/demo3/galaxyTexture.jpg",
-    function(texture) {
-      document.body.classList.remove("loading");
-      window.tunnel = new Tunnel(texture);
-    }
-  )
+  window.tunnel = new Tunnel();
+
 };

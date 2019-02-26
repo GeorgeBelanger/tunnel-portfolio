@@ -35,6 +35,7 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
   - Today I am going to work on getting the tunnel portfolio site working
     - First thing I am going to do is copy the codepen into a folder and make a github repo
     - The focus is going to be on index 2. Things I want to change:
-      - 1. Change the original particles into screenshots of my projects with nice framing
-      - 2. Change the texture of the tunnel
+      - 1. Change the original particles into screenshots of my projects
+      - 2. Make the particles clickable
+      - 3. Change the texture of the tunnel
     - Deleted all text off the page and am just left with the canvas and links
