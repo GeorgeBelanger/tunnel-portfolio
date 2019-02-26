@@ -2,9 +2,9 @@ var ww = window.innerWidth;
 var wh = window.innerHeight;
 var isMobile = ww < 500;
 
-function Tunnel() {
+function Tunnel(texture) {
   this.init();
-  this.createMesh();
+  this.createMesh(texture);
 
   this.handleEvents();
 
@@ -48,7 +48,7 @@ Tunnel.prototype.addParticle = function() {
   }
 };
 
-Tunnel.prototype.createMesh = function() {
+Tunnel.prototype.createMesh = function(texture) {
   var points = [];
   var i = 0;
   var geometry = new THREE.Geometry();
@@ -69,7 +69,7 @@ Tunnel.prototype.createMesh = function() {
 
   this.tubeMaterial = new THREE.MeshBasicMaterial({
     side: THREE.BackSide,
-    color:0xffffff
+    map: texture
   });
 
   this.tubeGeometry = new THREE.TubeGeometry(this.curve, 70, 0.02, 30, false);
@@ -279,7 +279,14 @@ Particle.prototype.update = function (tunnel) {
 };
 
 window.onload = function() {
+  var loader = new THREE.TextureLoader();
+  loader.crossOrigin = "Anonymous";
 
-  window.tunnel = new Tunnel();
-
+  loader.load(
+    "img/demo3/galaxyTexture.jpg",
+    function(texture) {
+      document.body.classList.remove("loading");
+      window.tunnel = new Tunnel(texture);
+    }
+  )
 };
