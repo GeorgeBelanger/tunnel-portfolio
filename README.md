@@ -42,3 +42,11 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
       - 2. Make the particles clickable
       - 3. Change the texture of the tunnel
   - Now I see why I should have branches for projects even if I am working solo - The commits don't have to be as big. I can add just comments and such and only save the truly notable commits for master. 
+
+## 2/27/19 Wednesday 5:45pm glickman
+  - Working on portfolio again today
+  - Also thought that I should make a photography website for Shunham. $100
+  - Making branches now- Starting with clickable geom's
+    - Going to get the click and or hover on box to work today. 
+      - Not sure if I want to keep the original design or swtich to static cubes that hyperspace when you click them.
+        - Starting with this tutorial https://soledadpenades.com/articles/three-js-tutorials/object-picking/
