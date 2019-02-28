@@ -42,10 +42,11 @@ Tunnel.prototype.init = function() {
 };
 
 Tunnel.prototype.addParticle = function() {
-  this.particles = [];
+  this.particles = [new Particle(this.scene)];
   for(var i = 0; i < (isMobile?10:20); i++){
     this.particles.push(new Particle(this.scene));
   }
+  allParticles = this.scene.children.filter(child => child.type == "Mesh")
 };
 
 Tunnel.prototype.createMesh = function() {
@@ -90,11 +91,21 @@ Tunnel.prototype.handleEvents = function() {
   document.body.addEventListener('mousedown', this.onMouseDown.bind(this), false);
   
   document.body.addEventListener('mouseup', this.onMouseUp.bind(this), false);
+  
+  document.body.addEventListener('click', this.onClick.bind(this), false);
   document.body.addEventListener('mouseleave', this.onMouseUp.bind(this), false);
   document.body.addEventListener('touchend', this.onMouseUp.bind(this), false);
   window.addEventListener('mouseout', this.onMouseUp.bind(this), false);
 };
 
+Tunnel.prototype.onClick = function() {
+  raycaster.setFromCamera( this.mouse, this.camera );
+      
+  // calculate objects intersecting the picking ray
+  var intersects = raycaster.intersectObjects( allParticles );
+  intersects[0] ? intersects[0].object.material.color.set( 0xff0000 ) : null
+
+}
 Tunnel.prototype.onMouseDown = function() {
   this.mousedown = true;
   TweenMax.to(this.scene.fog.color, 0.6, {
@@ -149,6 +160,8 @@ Tunnel.prototype.onMouseMove = function(e) {
     this.mouse.target.x = e.touches[0].clientX;
     this.mouse.target.y = e.touches[0].clientY;
   }
+  this.mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+	this.mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
 };
 
 Tunnel.prototype.updateCameraPosition = function() {
@@ -192,6 +205,8 @@ Tunnel.prototype.updateCurve = function() {
   this.splineMesh.geometry.vertices = this.curve.getPoints(70);
 };
 
+var raycaster = new THREE.Raycaster();
+
 Tunnel.prototype.render = function(time) {
 
   this.updateCameraPosition();
@@ -206,20 +221,20 @@ Tunnel.prototype.render = function(time) {
     }
   }
   
-  // When mouse down, add a lot of shapes
-  if (this.mousedown){
-    if(time - this.prevTime > 20){
-      this.prevTime = time;
-      this.particles.push(new Particle(this.scene, true, time));
-      if(!isMobile){
-        this.particles.push(new Particle(this.scene, true, time));
-        this.particles.push(new Particle(this.scene, true, time));
-      }
-    }
-  }
-  
-  this.renderer.render(this.scene, this.camera);
+  // // When mouse down, add a lot of shapes
+  // if (this.mousedown){
+  //   if(time - this.prevTime > 20){
+  //     this.prevTime = time;
+  //     this.particles.push(new Particle(this.scene, true, time));
+  //     if(!isMobile){
+  //       this.particles.push(new Particle(this.scene, true, time));
+  //       this.particles.push(new Particle(this.scene, true, time));
+  //     }
+  //   }
 
+      
+      this.renderer.render(this.scene, this.camera);
+      
   window.requestAnimationFrame(this.render.bind(this));
 };
 
