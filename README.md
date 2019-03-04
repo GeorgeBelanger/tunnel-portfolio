@@ -61,3 +61,14 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
                 - Could possibly be done better by chosing intersectObject with no 's' 
             - All the particles are recycled - If I click them all red all the new ones will be red as well. This can be fine. 
             - The particles are hard to click because they move with the mouse and the tunnel. 
+
+## 3/3/19 Sunday 7:30pm home
+  - Just gonna do a quick 20 minutes tonight to try and get an image as a surface for my frames.
+    - The progression and branches for the next phases of development will be:
+      1. Get image on surface
+      2. Get click to go to a link
+      3. Build my object table
+      4. Get a nice hover effect
+      5. Play with speed and placement of frames
+      6. Get hyperspace to work
+    
