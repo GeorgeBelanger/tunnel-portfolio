@@ -240,20 +240,30 @@ Tunnel.prototype.render = function(time) {
 
 function Particle(scene, burst, time) {
   var radius = Math.random()*0.002 + 0.0003;
-  var geom = this.cube
   var range = 50;
   if(burst){
     this.color = new THREE.Color("hsl("+(time / 50)+",100%,60%)");
   } else {
     var offset = 180;
   }
+  
   var cubeImageLoader = new THREE.TextureLoader();
   var cubeImage = cubeImageLoader.load( '../img/demo3/pairbnbmockup2.png' );
   cubeImage.encoding = THREE.sRGBEncoding;
   cubeImage.anisotropy = 16;
-  var mat = new THREE.MeshBasicMaterial({
-    map: cubeImage
-  });
+  
+  var cubeMaterialArray = [];
+  
+  // order to add materials: x+,x-,y+,y-,z+,z-
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { map: cubeImage } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { map: cubeImage } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  
+  var mat = new THREE.MeshFaceMaterial( cubeMaterialArray );
+  var geom = this.cube
   this.mesh = new THREE.Mesh(geom, mat);
   this.mesh.scale.set(radius, radius, radius);
   this.mesh.position.set(0,0,1.5);
