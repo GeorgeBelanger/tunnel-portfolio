@@ -42,3 +42,33 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
       - 2. Make the particles clickable
       - 3. Change the texture of the tunnel
   - Now I see why I should have branches for projects even if I am working solo - The commits don't have to be as big. I can add just comments and such and only save the truly notable commits for master. 
+
+## 2/27/19 Wednesday 5:45pm glickman
+  - Working on portfolio again today
+  - Also thought that I should make a photography website for Shunham. $100
+  - Making branches now- Starting with clickable geom's
+    - Going to get the click and or hover on box to work today. 
+      - Not sure if I want to keep the original design or swtich to static cubes that hyperspace when you click them.
+        - Starting with this tutorial https://soledadpenades.com/articles/three-js-tutorials/object-picking/
+          - Got the cubes to light up red only on click. Now to get my frames to light up red on click in demo2
+          - Got my frames to light up red only on click, but had some weird errors that came up
+            | If I chose this.scene.children, the tunnel itself would light up and if I filtered the results inside of render, it still lit up the tunnel
+              | If I chose this.particles, it said a.raycast was not a function because this.particles only has the speed data whereas children has all physics data
+                @ Inside of the add particles function, I set allParticles = this.scene.children.filter(child => child.type == "Mesh")
+            | If the mouse is hovering over a frame when it spawns, it becomes red
+            | Also note that the ray goes all the way through the scene and can possibly tag multiple frames.
+              @ Got it to click only the closest frame by removing the iterator and choosing intersects[0]
+                - Could possibly be done better by chosing intersectObject with no 's' 
+            - All the particles are recycled - If I click them all red all the new ones will be red as well. This can be fine. 
+            - The particles are hard to click because they move with the mouse and the tunnel. 
+
+## 3/3/19 Sunday 7:30pm home
+  - Just gonna do a quick 20 minutes tonight to try and get an image as a surface for my frames.
+    - The progression and branches for the next phases of development will be:
+      1. Get image on surface
+      2. Get click to go to a link
+      3. Build my object table
+      4. Get a nice hover effect
+      5. Play with speed and placement of frames
+      6. Get hyperspace to work
+    
