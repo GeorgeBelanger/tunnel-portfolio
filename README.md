@@ -71,4 +71,6 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
       4. Get a nice hover effect
       5. Play with speed and placement of frames
       6. Get hyperspace to work
-    
+    - Used this guide https://discoverthreejs.com/book/1-first-steps/4-textures-intro/#_
+    - Was able to map an image to all six sides of an object, but want to map 2 unique images to only 2 sides. 
+      - The images are also sometimes upside down... 

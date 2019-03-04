@@ -240,17 +240,30 @@ Tunnel.prototype.render = function(time) {
 
 function Particle(scene, burst, time) {
   var radius = Math.random()*0.002 + 0.0003;
-  var geom = this.cube
   var range = 50;
   if(burst){
     this.color = new THREE.Color("hsl("+(time / 50)+",100%,60%)");
   } else {
     var offset = 180;
   }
-  var mat = new THREE.MeshPhongMaterial({
-    color: this.color,
-    shading:THREE.FlatShading
-  });
+  
+  var cubeImageLoader = new THREE.TextureLoader();
+  var cubeImage = cubeImageLoader.load( '../img/demo3/pairbnbmockup2.png' );
+  cubeImage.encoding = THREE.sRGBEncoding;
+  cubeImage.anisotropy = 16;
+  
+  var cubeMaterialArray = [];
+  
+  // order to add materials: x+,x-,y+,y-,z+,z-
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { map: cubeImage } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { map: cubeImage } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+  
+  var mat = new THREE.MeshFaceMaterial( cubeMaterialArray );
+  var geom = this.cube
   this.mesh = new THREE.Mesh(geom, mat);
   this.mesh.scale.set(radius, radius, radius);
   this.mesh.position.set(0,0,1.5);
@@ -270,7 +283,9 @@ function Particle(scene, burst, time) {
   scene.add(this.mesh);
 }
 
-Particle.prototype.cube = new THREE.BoxBufferGeometry(.5, 5, 3);
+Particle.prototype.cube = new THREE.BoxBufferGeometry( 5, .5, 3)
+
+
 Particle.prototype.update = function (tunnel) {
   
   this.percent += this.speed * (this.burst?1:tunnel.speed);
