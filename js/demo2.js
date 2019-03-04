@@ -247,9 +247,12 @@ function Particle(scene, burst, time) {
   } else {
     var offset = 180;
   }
-  var mat = new THREE.MeshPhongMaterial({
-    color: this.color,
-    shading:THREE.FlatShading
+  var cubeImageLoader = new THREE.TextureLoader();
+  var cubeImage = cubeImageLoader.load( '../img/demo3/pairbnbmockup2.png' );
+  cubeImage.encoding = THREE.sRGBEncoding;
+  cubeImage.anisotropy = 16;
+  var mat = new THREE.MeshBasicMaterial({
+    map: cubeImage
   });
   this.mesh = new THREE.Mesh(geom, mat);
   this.mesh.scale.set(radius, radius, radius);
@@ -270,7 +273,9 @@ function Particle(scene, burst, time) {
   scene.add(this.mesh);
 }
 
-Particle.prototype.cube = new THREE.BoxBufferGeometry(.5, 5, 3);
+Particle.prototype.cube = new THREE.BoxBufferGeometry( 5, .5, 3)
+
+
 Particle.prototype.update = function (tunnel) {
   
   this.percent += this.speed * (this.burst?1:tunnel.speed);
