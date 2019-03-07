@@ -63,7 +63,7 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
             - The particles are hard to click because they move with the mouse and the tunnel. 
 
 ## 3/3/19 Sunday 7:30pm home
-  - Just gonna do a quick 20 minutes tonight to try and get an image as a surface for my frames.
+  - Just gonna do a quick 20 minutes(actually spent 1 hour) tonight to try and get an image as a surface for my frames.
     - The progression and branches for the next phases of development will be:
       1. Get image on surface
       2. Get click to go to a link
@@ -73,4 +73,8 @@ Follow Codrops: [Twitter](http://www.twitter.com/codrops), [Facebook](http://www
       6. Get hyperspace to work
     - Used this guide https://discoverthreejs.com/book/1-first-steps/4-textures-intro/#_
     - Was able to map an image to all six sides of an object, but want to map 2 unique images to only 2 sides. 
-      - The images are also sometimes upside down... 
+      - The images are also sometimes upside down...
+
+## 3/6/19 Wednesday 7:15pm home
+  - Added a url change when objects are clicked. 
+    - In tunnel.prototype.onclick, if the raycaster intersects something: `window.location.href='http://www.google.com/'` after 2000ms delay.

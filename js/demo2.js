@@ -103,7 +103,8 @@ Tunnel.prototype.onClick = function() {
       
   // calculate objects intersecting the picking ray
   var intersects = raycaster.intersectObjects( allParticles );
-  intersects[0] ? intersects[0].object.material.color.set( 0xff0000 ) : null
+  intersects[0] ? setTimeout(() => { window.location.href='http://www.google.com/' }, 2000) : null
+
 
 }
 Tunnel.prototype.onMouseDown = function() {
